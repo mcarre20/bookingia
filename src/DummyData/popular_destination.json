@@ -1,0 +1,54 @@
+{
+  "cities": [
+    {
+      "id": "01",
+      "name": "Bangkok",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "02",
+      "name": "Paris",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "03",
+      "name": "London",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "04",
+      "name": "Dubai",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "05",
+      "name": "Singarpore",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "06",
+      "name": "Kua Lumpur",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "07",
+      "name": "New York",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "08",
+      "name": "Istanbul",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "09",
+      "name": "Tokyo",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    },
+    {
+      "id": "10",
+      "name": "Antalya",
+      "image": "https://firebasestorage.googleapis.com/v0/b/bookingia.appspot.com/o/Bangkok.jpg?alt=media&token=358b88a1-68ce-453b-9b50-946dce7b5c36"
+    }
+  ]
+}

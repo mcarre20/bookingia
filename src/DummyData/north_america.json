@@ -1,0 +1,44 @@
+{
+  "cities": [
+    {
+      "id": "01",
+      "name": "New York"
+    },
+    {
+      "id": "02",
+      "name": "Miami"
+    },
+    {
+      "id": "03",
+      "name": "Los Angeles"
+    },
+    {
+      "id": "04",
+      "name": "Las Vegas"
+    },
+    {
+      "id": "05",
+      "name": "Cancun"
+    },
+    {
+      "id": "06",
+      "name": "Orlando"
+    },
+    {
+      "id": "07",
+      "name": "Toronto"
+    },
+    {
+      "id": "08",
+      "name": "Punta Cana"
+    },
+    {
+      "id": "09",
+      "name": "Vancouver"
+    },
+    {
+      "id": "01",
+      "name": "San Francisco"
+    }
+  ]
+}
