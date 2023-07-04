@@ -9,7 +9,7 @@ function Home() {
   const cityListNa = north_america.cities;
   return (
     <>
-      <NavBarHome />
+      <NavBarHome displaySearch={true} />
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
         <section id="popular_destiantion">
           <Box>

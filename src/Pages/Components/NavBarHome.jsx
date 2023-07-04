@@ -11,6 +11,12 @@ import {
   styled,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import { signOut } from "firebase/auth";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { auth } from "../../firebase";
+import Favorites from "./Favorites";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   background: "#e0e0e0",
@@ -29,7 +35,28 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-function NavBarHome() {
+function NavBarHome({ displaySearch }) {
+  const { userIsLogin } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
+  const naviagte = useNavigate();
+
+  //handlers
+  const loginButtonHandler = () => {
+    naviagte("/login");
+  };
+
+  const logoutButtonHandler = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful
+        dispatch({ type: "LOGOUT" });
+        naviagte("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <AppBar position="sticky">
       <Container maxWidth="lg">
@@ -42,17 +69,30 @@ function NavBarHome() {
           >
             <Typography variant="h3">Bookingia</Typography>
             <Stack spacing={2} direction="row">
-              <StyledButton variant="contained">Register</StyledButton>
-              <StyledButton variant="contained">Login</StyledButton>
+              {!userIsLogin && (
+                <StyledButton variant="contained">Register</StyledButton>
+              )}
+              {!userIsLogin && (
+                <StyledButton variant="contained" onClick={loginButtonHandler}>
+                  Login
+                </StyledButton>
+              )}
+              {userIsLogin && <Favorites />}
+              {userIsLogin && (
+                <StyledButton variant="contained" onClick={logoutButtonHandler}>
+                  Logout
+                </StyledButton>
+              )}
             </Stack>
           </Stack>
           <Paper
             elevation={2}
+            display={displaySearch ? "flex" : "none"}
             sx={{
               width: "100%",
               py: "10px",
               px: "10px",
-              display: "flex",
+              display: `${displaySearch ? "flex" : "none"}`,
               justifyContent: "space-between",
             }}
           >
