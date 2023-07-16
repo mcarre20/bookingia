@@ -1,14 +1,15 @@
 import { Box, Typography } from "@mui/material";
-import Bangkok from "../../assets/Bangkok.jpg";
-function HotelCard({ cityName }) {
+import { capitalizeFirstWord } from "../../helpers/helperFunctions";
+
+function HotelCard({ cityName, imageURL }) {
   return (
     <Box
       borderRadius="10px"
       sx={{
         backgroundColor: "gray",
-        background: `url(${Bangkok})`,
+        background: `url(${imageURL})`,
         backgroundSize: "cover",
-        width: "150px",
+        width: "217px",
         aspectRatio: "4/3",
         cursor: "pointer",
       }}
@@ -23,7 +24,7 @@ function HotelCard({ cityName }) {
           color="#fff"
           sx={{ fontWeight: "bold", cursor: "defualt" }}
         >
-          {cityName}
+          {capitalizeFirstWord(cityName)}
         </Typography>
       </Box>
     </Box>

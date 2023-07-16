@@ -1,63 +1,235 @@
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
-import north_america from "../DummyData/north_america.json";
-import popular_destination from "../DummyData/popular_destination.json";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import { collectionGroup, getDocs, query } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { useEffect, useState } from "react";
+import { db, storage } from "../firebase";
 import CityCard from "./Components/CityCard";
 import NavBarHome from "./Components/NavBarHome";
 
 function Home() {
-  const cityListGlb = popular_destination.cities;
-  const cityListNa = north_america.cities;
+  const [cities, setCities] = useState([]);
+  const [loading, setloading] = useState(true);
+
+  useEffect(() => {
+    /// fetch data from firestore
+    const getData = async () => {
+      const promisesWorldCities = [];
+      const worldCitiesTemp = [];
+
+      // Get World
+      try {
+        const queryAllCities = await getDocs(
+          query(collectionGroup(db, "cities_list"))
+        );
+
+        queryAllCities.forEach((doc) => {
+          const city = doc.data().city;
+          promisesWorldCities.push(
+            getDownloadURL(ref(storage, `Cities/${city}_300x300.jpg`))
+              .then((url) => {
+                worldCitiesTemp.push({
+                  id: doc.id,
+                  imageURL: url,
+                  ...doc.data(),
+                });
+                return Promise.resolve({
+                  id: doc.id,
+                  imageURL: url,
+                  ...doc.data(),
+                });
+              })
+              .then(() => {
+                return Promise.resolve("sucess");
+              })
+              .catch((err) => {
+                console.log(err);
+              })
+          );
+        });
+        Promise.all(promisesWorldCities).then(() => {
+          worldCitiesTemp.sort((a, b) => {
+            let fa = a.city.toLowerCase(),
+              fb = b.city.toLowerCase();
+
+            if (fa < fb) {
+              return -1;
+            }
+            if (fa > fb) {
+              return 1;
+            }
+            return 0;
+          });
+          setCities(worldCitiesTemp);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+      setloading(false);
+    };
+    getData();
+  }, []);
+
   return (
     <>
       <NavBarHome displaySearch={true} />
-      <Container maxWidth="lg" sx={{ mt: "2rem" }}>
-        <section id="popular_destiantion">
-          <Box>
-            <Typography variant="h4">Popular Destinations</Typography>
+      {loading ? (
+        <Typography>loading</Typography>
+      ) : (
+        <Container maxWidth="lg" sx={{ mt: "2rem" }}>
+          <Box
+            component="section"
+            id="popular_destiantion_world"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">Popular Destinations - World</Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (!city.region) {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
           </Box>
-          <Grid container spacing={2} paddingY={2}>
-            {cityListGlb.map((city) => {
-              return (
-                <Grid item>
-                  <CityCard key={city.id} cityName={city.name} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </section>
-        <section id="north_america">
-          <Box>
-            <Typography variant="h4">North America</Typography>
+          <Box
+            component="section"
+            id="popular_destiantion_africa"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">
+                Popular Destinations - Africa
+              </Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (city.region === "africa") {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
           </Box>
-          <Grid container spacing={2} paddingY={2}>
-            {cityListNa.map((city) => {
-              return (
-                <Grid item>
-                  <CityCard key={city.id} cityName={city.name} />
-                </Grid>
-              );
-            })}
-          </Grid>
-        </section>
-        <section id="south_america">
-          <Box>
-            <Typography variant="h4">South America</Typography>
+          <Box
+            component="section"
+            id="popular_destiantion_asia"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">Popular Destinations - Asia</Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (city.region === "asia") {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
           </Box>
-          <Stack direction="row" spacing={4} paddingY={2}></Stack>
-        </section>
-        <section id="europe">
-          <Box>
-            <Typography variant="h4">Europe</Typography>
+          <Box
+            component="section"
+            id="popular_destiantion_europe"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">
+                Popular Destinations - Europe
+              </Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (city.region === "europe") {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
           </Box>
-          <Stack direction="row" spacing={4} paddingY={2}></Stack>
-        </section>
-        <section id="Asia">
-          <Box>
-            <Typography variant="h4">Asia</Typography>
+          <Box
+            component="section"
+            id="popular_destiantion_northamerica"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">
+                Popular Destinations - North America
+              </Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (city.region === "north america") {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
           </Box>
-          <Stack direction="row" spacing={4} paddingY={2}></Stack>
-        </section>
-      </Container>
+          <Box
+            component="section"
+            id="popular_destiantion_southamerica"
+            marginBottom={7}
+          >
+            <Box>
+              <Typography variant="h4">
+                Popular Destinations - South America
+              </Typography>
+            </Box>
+            <Grid container spacing={2} paddingY={2}>
+              {cities.map((city) => {
+                if (city.region === "south america") {
+                  return (
+                    <Grid item key={city.id}>
+                      <CityCard
+                        key={city.id}
+                        cityName={city.city}
+                        imageURL={city.imageURL}
+                      />
+                    </Grid>
+                  );
+                }
+              })}
+            </Grid>
+          </Box>
+        </Container>
+      )}
     </>
   );
 }
