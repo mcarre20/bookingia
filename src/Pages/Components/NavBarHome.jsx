@@ -1,8 +1,8 @@
 import {
   AppBar,
-  Box,
   Button,
   Container,
+  Divider,
   Paper,
   Stack,
   TextField,
@@ -13,7 +13,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { signOut } from "firebase/auth";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { auth } from "../../firebase";
 import Favorites from "./Favorites";
@@ -35,7 +35,7 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   },
 }));
 
-function NavBarHome({ displaySearch }) {
+function NavBarHome() {
   const { userIsLogin } = useContext(AuthContext);
   const { dispatch } = useContext(AuthContext);
   const naviagte = useNavigate();
@@ -67,7 +67,9 @@ function NavBarHome({ displaySearch }) {
             justifyContent="space-between"
             width="100%"
           >
-            <Typography variant="h3">Bookingia</Typography>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <Typography variant="h3">Bookingia</Typography>
+            </Link>
             <Stack spacing={2} direction="row">
               {!userIsLogin && (
                 <StyledButton variant="contained">Register</StyledButton>
@@ -87,33 +89,41 @@ function NavBarHome({ displaySearch }) {
           </Stack>
           <Paper
             elevation={2}
-            display={displaySearch ? "flex" : "none"}
             sx={{
               width: "100%",
               py: "10px",
               px: "10px",
-              display: `${displaySearch ? "flex" : "none"}`,
+              display: "flex",
               justifyContent: "space-between",
             }}
           >
             <TextField required label="Destination" size="small" />
 
-            <Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              divider={<Divider orientation="vertical" flexItem />}
+            >
               <DatePicker
                 label="Check-in"
                 slotProps={{ textField: { size: "small", width: "50%" } }}
               />
+
               <DatePicker
                 label="Check-out"
                 slotProps={{ textField: { size: "small" } }}
               />
-            </Box>
+            </Stack>
 
-            <Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              divider={<Divider orientation="vertical" flexItem />}
+            >
               <TextField label="Adults" sx={{ width: 80 }} size="small" />
-              <TextField label="Children" sx={{ width: 90 }} size="small" />
+
               <TextField label="Rooms" sx={{ width: 90 }} size="small" />
-            </Box>
+            </Stack>
             <Button variant="contained">Search</Button>
           </Paper>
         </StyledToolbar>

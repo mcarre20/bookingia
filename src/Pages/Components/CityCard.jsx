@@ -1,33 +1,39 @@
 import { Box, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { capitalizeFirstWord } from "../../helpers/helperFunctions";
 
 function HotelCard({ cityName, imageURL }) {
   return (
-    <Box
-      borderRadius="10px"
-      sx={{
-        backgroundColor: "gray",
-        background: `url(${imageURL})`,
-        backgroundSize: "cover",
-        width: "217px",
-        aspectRatio: "4/3",
-        cursor: "pointer",
-      }}
+    <Link
+      to={`/hotels/${cityName}`}
+      style={{ textDecoration: "none", color: "inherit" }}
     >
       <Box
-        borderRadius="10px 10px 0px 0px"
-        padding={1}
-        sx={{ backgroundColor: "black", opacity: "0.6" }}
+        borderRadius="10px"
+        sx={{
+          backgroundColor: "gray",
+          background: `url(${imageURL})`,
+          backgroundSize: "cover",
+          width: "217px",
+          aspectRatio: "4/3",
+          cursor: "pointer",
+        }}
       >
-        <Typography
-          variant="subtitle"
-          color="#fff"
-          sx={{ fontWeight: "bold", cursor: "defualt" }}
+        <Box
+          borderRadius="10px 10px 0px 0px"
+          padding={1}
+          sx={{ backgroundColor: "black", opacity: "0.6" }}
         >
-          {capitalizeFirstWord(cityName)}
-        </Typography>
+          <Typography
+            variant="subtitle"
+            color="#fff"
+            sx={{ fontWeight: "bold", cursor: "defualt" }}
+          >
+            {capitalizeFirstWord(cityName)}
+          </Typography>
+        </Box>
       </Box>
-    </Box>
+    </Link>
   );
 }
 

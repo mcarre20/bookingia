@@ -1,234 +1,57 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import React from "react";
-import hotel from "../assets/hotel.jpg";
+import { Container, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { searchHotels, searchLocation } from "../API/HotelAPI";
+import HotelCard from "./Components/HotelCard";
 import NavBarHome from "./Components/NavBarHome";
 
 function Hotels() {
+  const { city } = useParams();
+  const [fetchError, setFetchError] = useState(false);
+  const [hotelsList, setHotelsList] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { cityData, error: cityFetchError } = await searchLocation(city);
+      if (cityFetchError) {
+        setFetchError(true);
+        return;
+      }
+      const locationID = cityData.dest_id.toString();
+      console.log(locationID);
+      const { fetchedHotelList, error: hotelListFetchError } =
+        await searchHotels(locationID, 1, 2, "2023-09-26", "2023-09-30");
+      if (hotelListFetchError) {
+        setFetchError(true);
+        return;
+      }
+      setHotelsList(fetchedHotelList.result);
+    };
+    getData();
+  }, []);
+  console.log(hotelsList);
   return (
     <>
       <NavBarHome />
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <Box
-              bgcolor="secondary.light"
-              padding={2}
-              sx={{
-                borderRadius: "10px",
-                position: "sticky",
-                alignSelf: "flex-start",
-              }}
-            >
-              <Typography variant="h6">Search</Typography>
-              <Box>
-                <Typography>Destination</Typography>
-                <Paper>
-                  <TextField required label="Destination" size="small" />
-                </Paper>
-              </Box>
-              <Box>
-                <Typography>Date</Typography>
-                <Paper>
-                  <DatePicker
-                    label="Check-in"
-                    slotProps={{ textField: { size: "small", width: "50%" } }}
-                  />
-                  <DatePicker
-                    label="Check-out"
-                    slotProps={{ textField: { size: "small" } }}
-                  />
-                </Paper>
-              </Box>
-              <Box>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography>Adults</Typography>
-                  <TextField sx={{ width: 80 }} size="small" />
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography>Children</Typography>
-                  <TextField sx={{ width: 80 }} size="small" />
-                </Box>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography>Rooms</Typography>
-                  <TextField sx={{ width: 80 }} size="small" />
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item xs={9}>
-            <Stack spacing={4}>
-              <Card sx={{ display: "flex", padding: 2 }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300, height: 300 }}
-                  image={hotel}
-                  alt="hotel picture"
-                />
-
-                <Box>
-                  <CardContent
-                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                  >
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography>Hotel Name</Typography>
-                      <Typography>3 Stars</Typography>
-                    </Box>
-
-                    <Box>
-                      <Typography>Description</Typography>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nulla fringilla sapien lacus. Nam urna lectus, auctor et
-                        rhoncus eu, molestie tincidunt turpis. Sed finibus dolor
-                        sit amet lorem aliquet feugiat. Fusce nec ullamcorper
-                        ex. Praesent a rhoncus lectus. Suspendisse hendrerit mi
-                        semper sodales elementum. Curabitur cursus, nunc a
-                        blandit porta, augue metus pharetra eros, sed placerat
-                        neque enim a dolor.
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-end",
-
-                        gap: 1,
-                      }}
-                    >
-                      <Typography>$150/night</Typography>
-                      <Button variant="contained">See Rooms</Button>
-                    </Box>
-                  </CardContent>
-                </Box>
-              </Card>
-              <Card sx={{ display: "flex", padding: 2 }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300, height: 300 }}
-                  image={hotel}
-                  alt="hotel picture"
-                />
-
-                <Box>
-                  <CardContent
-                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                  >
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography>Hotel Name</Typography>
-                      <Typography>3 Stars</Typography>
-                    </Box>
-
-                    <Box>
-                      <Typography>Description</Typography>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nulla fringilla sapien lacus. Nam urna lectus, auctor et
-                        rhoncus eu, molestie tincidunt turpis. Sed finibus dolor
-                        sit amet lorem aliquet feugiat. Fusce nec ullamcorper
-                        ex. Praesent a rhoncus lectus. Suspendisse hendrerit mi
-                        semper sodales elementum. Curabitur cursus, nunc a
-                        blandit porta, augue metus pharetra eros, sed placerat
-                        neque enim a dolor.
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-end",
-
-                        gap: 1,
-                      }}
-                    >
-                      <Typography>$150/night</Typography>
-                      <Button variant="contained">See Rooms</Button>
-                    </Box>
-                  </CardContent>
-                </Box>
-              </Card>
-              <Card sx={{ display: "flex", padding: 2 }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: 300, height: 300 }}
-                  image={hotel}
-                  alt="hotel picture"
-                />
-
-                <Box>
-                  <CardContent
-                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
-                  >
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography>Hotel Name</Typography>
-                      <Typography>3 Stars</Typography>
-                    </Box>
-
-                    <Box>
-                      <Typography>Description</Typography>
-                      <Typography>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Nulla fringilla sapien lacus. Nam urna lectus, auctor et
-                        rhoncus eu, molestie tincidunt turpis. Sed finibus dolor
-                        sit amet lorem aliquet feugiat. Fusce nec ullamcorper
-                        ex. Praesent a rhoncus lectus. Suspendisse hendrerit mi
-                        semper sodales elementum. Curabitur cursus, nunc a
-                        blandit porta, augue metus pharetra eros, sed placerat
-                        neque enim a dolor.
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-end",
-                        alignItems: "flex-end",
-
-                        gap: 1,
-                      }}
-                    >
-                      <Typography>$150/night</Typography>
-                      <Button variant="contained">See Rooms</Button>
-                    </Box>
-                  </CardContent>
-                </Box>
-              </Card>
-            </Stack>
-          </Grid>
-        </Grid>
+        <Stack spacing={4}>
+          {hotelsList.map((hotel) => {
+            return (
+              <HotelCard
+                id={hotel.hotel_id}
+                hotelName={hotel.hotel_name}
+                hotelAddress={hotel.address}
+                minPrice={hotel.min_total_price}
+                currency={hotel.currencycode}
+                photoURL={hotel.max_photo_url}
+                hotelClass={hotel.class}
+                distanceFromCenter={hotel.distance_to_cc}
+                cityDistrict={hotel.district}
+                hotelZipcode={hotel.zip}
+              />
+            );
+          })}
+        </Stack>
       </Container>
     </>
   );
