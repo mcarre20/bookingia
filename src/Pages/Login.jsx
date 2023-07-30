@@ -4,7 +4,6 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { auth } from "../firebase";
-import NavBarHome from "./Components/NavBarHome";
 
 function Login() {
   //states
@@ -43,7 +42,6 @@ function Login() {
 
   return (
     <>
-      <NavBarHome />
       <Container maxWidth="xs" sx={{ mt: "2rem" }}>
         <form onSubmit={handlelogin}>
           <Stack gap={3}>

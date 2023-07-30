@@ -11,11 +11,14 @@ import {
   styled,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 import { signOut } from "firebase/auth";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import { SearchContext } from "../../Context/SeachContext";
 import { auth } from "../../firebase";
+import { formatDate } from "../../helpers/helperFunctions";
 import Favorites from "./Favorites";
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -36,27 +39,80 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 function NavBarHome() {
-  const { userIsLogin } = useContext(AuthContext);
-  const { dispatch } = useContext(AuthContext);
-  const naviagte = useNavigate();
+  const navigate = useNavigate();
+  const { userIsLogin, dispatch: authDispatch } = useContext(AuthContext);
+  const {
+    checkin,
+    checkout,
+    numberOfAdults,
+    numberOfRooms,
+    dispatch: searchDispatch,
+  } = useContext(SearchContext);
+  const [destinationState, setDestination] = useState("");
+  const [checkinDate, setCheckinDate] = useState(dayjs(checkin));
+  const [checkoutDate, setCheckoutDate] = useState(dayjs(checkout));
+  const [numberOfAdultsState, setNumberOfAdults] = useState(numberOfAdults);
+  const [numberOfRoomsSate, setNumberOfRooms] = useState(numberOfRooms);
 
   //handlers
   const loginButtonHandler = () => {
-    naviagte("/login");
+    navigate("/login");
   };
 
   const logoutButtonHandler = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful
-        dispatch({ type: "LOGOUT" });
-        naviagte("/");
+        authDispatch({ type: "LOGOUT" });
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const destinationHandler = (e) => {
+    const value = e.target.value;
+    setDestination(value);
+  };
+  const checkinHandler = (newValue) => {
+    const date = formatDate(newValue.$d);
+    setCheckinDate(date);
+  };
+  const checkoutHandler = (newValue) => {
+    const date = formatDate(newValue.$d);
+    setCheckoutDate(date);
+  };
+  const numberOfAdultsHandler = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      return;
+    }
+    setNumberOfAdults(Number(value));
+  };
+  const numberOfRoomsHandler = (e) => {
+    const value = e.target.value;
+    if (value === "") {
+      return;
+    }
+    setNumberOfRooms(Number(value));
+  };
+  const searchHandler = () => {
+    if (destinationState === "") {
+      return;
+    }
+    searchDispatch({
+      type: "new_search",
+      payload: {
+        destination: destinationState,
+        checkin: checkinDate,
+        checkout: checkoutDate,
+        numberOfAdults: numberOfAdultsState,
+        numberOfRooms: numberOfRoomsSate,
+      },
+    });
+    navigate("/hotels");
+  };
   return (
     <AppBar position="sticky">
       <Container maxWidth="lg">
@@ -87,17 +143,24 @@ function NavBarHome() {
               )}
             </Stack>
           </Stack>
+
           <Paper
             elevation={2}
             sx={{
               width: "100%",
-              py: "10px",
+              py: "15px",
               px: "10px",
               display: "flex",
               justifyContent: "space-between",
             }}
           >
-            <TextField required label="Destination" size="small" />
+            <TextField
+              required
+              label="Destination"
+              size="small"
+              onChange={destinationHandler}
+              value={destinationState}
+            />
 
             <Stack
               direction="row"
@@ -107,11 +170,17 @@ function NavBarHome() {
               <DatePicker
                 label="Check-in"
                 slotProps={{ textField: { size: "small", width: "50%" } }}
+                value={checkinDate}
+                onChange={checkinHandler}
+                disablePast
               />
 
               <DatePicker
                 label="Check-out"
                 slotProps={{ textField: { size: "small" } }}
+                value={checkoutDate}
+                onChange={checkoutHandler}
+                disablePast
               />
             </Stack>
 
@@ -120,11 +189,25 @@ function NavBarHome() {
               spacing={1}
               divider={<Divider orientation="vertical" flexItem />}
             >
-              <TextField label="Adults" sx={{ width: 80 }} size="small" />
+              <TextField
+                label="adults"
+                sx={{ width: 90 }}
+                size="small"
+                value={numberOfAdultsState}
+                onChange={numberOfAdultsHandler}
+              />
 
-              <TextField label="Rooms" sx={{ width: 90 }} size="small" />
+              <TextField
+                label="Rooms"
+                sx={{ width: 90 }}
+                size="small"
+                value={numberOfRoomsSate}
+                onChange={numberOfRoomsHandler}
+              />
             </Stack>
-            <Button variant="contained">Search</Button>
+            <Button variant="contained" onClick={searchHandler}>
+              Search
+            </Button>
           </Paper>
         </StyledToolbar>
       </Container>

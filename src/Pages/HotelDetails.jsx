@@ -7,12 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import NavBarHome from "./Components/NavBarHome";
 
 function HotelDetails() {
   return (
     <>
-      <NavBarHome />
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
         <Box>
           <Typography variant="h5">Hotel Name</Typography>

@@ -5,16 +5,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { AuthContextProvider } from "./Context/AuthContext";
+import { SearchContextProvider } from "./Context/SeachContext";
 import theme from "./theme";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <AuthContextProvider>
-          <CssBaseline />
-          <App />
-        </AuthContextProvider>
+        <SearchContextProvider>
+          <AuthContextProvider>
+            <CssBaseline />
+            <App />
+          </AuthContextProvider>
+        </SearchContextProvider>
       </LocalizationProvider>
     </ThemeProvider>
   </React.StrictMode>

@@ -7,3 +7,9 @@ export const capitalizeFirstWord = function (string) {
 
   return newString;
 };
+
+export const formatDate = function (dateObject) {
+  const dateString = dateObject.toISOString();
+  const date = dateString.slice(0, 10);
+  return date;
+};

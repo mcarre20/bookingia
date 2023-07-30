@@ -9,7 +9,7 @@ import NavBarHome from "./Components/NavBarHome";
 function Home() {
   const [cities, setCities] = useState([]);
   const [loading, setloading] = useState(true);
-
+  /*
   useEffect(() => {
     /// fetch data from firestore
     const getData = async () => {
@@ -68,10 +68,9 @@ function Home() {
     };
     getData();
   }, []);
-
+  */
   return (
     <>
-      <NavBarHome displaySearch={true} />
       {loading ? (
         <Typography>loading</Typography>
       ) : (

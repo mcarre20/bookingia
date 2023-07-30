@@ -1,14 +1,14 @@
 import { Container, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { searchHotels, searchLocation } from "../API/HotelAPI";
+import { SearchContext } from "../Context/SeachContext";
 import HotelCard from "./Components/HotelCard";
-import NavBarHome from "./Components/NavBarHome";
 
 function Hotels() {
-  const { city } = useParams();
+  const { destination: city } = useContext(SearchContext);
   const [fetchError, setFetchError] = useState(false);
   const [hotelsList, setHotelsList] = useState([]);
+  console.log(city);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,7 +32,6 @@ function Hotels() {
   console.log(hotelsList);
   return (
     <>
-      <NavBarHome />
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
         <Stack spacing={4}>
           {hotelsList.map((hotel) => {
