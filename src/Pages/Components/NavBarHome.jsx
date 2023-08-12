@@ -13,7 +13,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { signOut } from "firebase/auth";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { SearchContext } from "../../Context/SeachContext";
@@ -42,6 +42,7 @@ function NavBarHome() {
   const navigate = useNavigate();
   const { userIsLogin, dispatch: authDispatch } = useContext(AuthContext);
   const {
+    destination,
     checkin,
     checkout,
     numberOfAdults,
@@ -113,6 +114,13 @@ function NavBarHome() {
     });
     navigate("/hotels");
   };
+
+  useEffect(() => {
+    if (destination.toLowerCase() != destinationState.toLowerCase()) {
+      setDestination(destination);
+    }
+  }, [destination]);
+
   return (
     <AppBar position="sticky">
       <Container maxWidth="lg">

@@ -45,3 +45,46 @@ export async function searchHotels(
 
   return { fetchedHotelList, error };
 }
+
+export async function getHotelData(hotelID) {
+  const resp = await fetch(
+    `https://booking-com.p.rapidapi.com/v1/hotels/data?locale=en-us&hotel_id=${hotelID}`,
+    options
+  );
+  const data = await resp.json();
+  return data;
+}
+
+export async function getHotelRooms(
+  hotelID,
+  checkinDate,
+  checkoutDate,
+  numberOfAdults,
+  numberOfRooms
+) {
+  const numberAdultsPerRoom = [];
+  for (let i = 0; i < numberOfRooms; i++) {
+    numberAdultsPerRoom.push(numberOfAdults);
+  }
+  const resp = await fetch(
+    `https://booking-com.p.rapidapi.com/v1/hotels/room-list?units=metric&adults_number_by_rooms=${numberAdultsPerRoom.join(
+      "%"
+    )}${
+      numberOfRooms > 1 ? `c${numberOfRooms}` : ""
+    }&checkin_date=${checkinDate}&locale=en-us&checkout_date=${checkoutDate}&currency=USD&hotel_id=${hotelID}`,
+    options
+  );
+
+  const data = await resp.json();
+
+  return data;
+}
+
+export async function getHotelPictures(hotelID) {
+  const resp = await fetch(
+    `https://booking-com.p.rapidapi.com/v1/hotels/photos?locale=en-us&hotel_id=${hotelID}`,
+    options
+  );
+  const data = await resp.json();
+  return data;
+}

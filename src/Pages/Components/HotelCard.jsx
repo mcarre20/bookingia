@@ -6,6 +6,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function HotelCard({
   id,
@@ -26,6 +27,7 @@ function HotelCard({
         sx={{ width: 200, height: 200 }}
         image={photoURL}
         alt="hotel picture"
+        loading="lazy"
       />
 
       <Box
@@ -74,7 +76,12 @@ function HotelCard({
             From {`${minPrice.toFixed(2)} ${currency}`}
           </Typography>
           <Button variant="contained" size="medium">
-            See Rooms
+            <Link
+              to={`/hotel/${id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              See Rooms
+            </Link>
           </Button>
         </Box>
       </Box>
