@@ -75,14 +75,19 @@ function HotelCard({
           >
             From {`${minPrice.toFixed(2)} ${currency}`}
           </Typography>
-          <Button variant="contained" size="medium">
-            <Link
-              to={`/hotel/${id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
+          <Link
+            to={`/hotel/${id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Button
+              variant="contained"
+              size="medium"
+              color="secondary"
+              sx={{ color: "white" }}
             >
               See Rooms
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </Box>
       </Box>
     </Card>
