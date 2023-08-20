@@ -1,16 +1,17 @@
-import { Alert, Button, Container, Stack, TextField } from "@mui/material";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Alert, Button, Stack, TextField } from "@mui/material";
+import { Container } from "@mui/system";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { auth } from "../firebase";
 
-function Login() {
+function Register() {
   //states
   const [error, setEror] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // dispatch and navigation
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ function Login() {
   const passwordHandler = (e) => {
     setPassword(e.target.value.trim());
   };
-  const handlelogin = (e) => {
+  const handleCreateUser = (e) => {
     e.preventDefault();
     setEror(false);
-    setErorMessage("");
-    signInWithEmailAndPassword(auth, email, password)
+    setErrorMessage("");
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -36,7 +37,7 @@ function Login() {
         navigate("/");
       })
       .catch((error) => {
-        setErorMessage(error.message);
+        setErrorMessage(error.message);
         setEror(true);
       });
   };
@@ -47,7 +48,7 @@ function Login() {
         maxWidth="xs"
         sx={{ pt: "2rem", minHeight: "calc(100vh - 250px)" }}
       >
-        <form onSubmit={handlelogin}>
+        <form onSubmit={handleCreateUser}>
           <Stack gap={3}>
             <TextField label="Email" type="email" onChange={emailHandler} />
             <TextField
@@ -62,7 +63,7 @@ function Login() {
               color="secondary"
               type="submit"
             >
-              Login
+              Register
             </Button>
           </Stack>
         </form>
@@ -71,4 +72,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

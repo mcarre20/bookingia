@@ -13,11 +13,12 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { signOut } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { SearchContext } from "../../Context/SeachContext";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { formatDate } from "../../helpers/helperFunctions";
 import Favorites from "./Favorites";
 
@@ -54,10 +55,14 @@ function NavBarHome() {
   const [checkoutDate, setCheckoutDate] = useState(dayjs(checkout));
   const [numberOfAdultsState, setNumberOfAdults] = useState(numberOfAdults);
   const [numberOfRoomsSate, setNumberOfRooms] = useState(numberOfRooms);
+  const [hotelFav, setHotelFav] = useState([]);
 
   //handlers
   const loginButtonHandler = () => {
     navigate("/login");
+  };
+  const registerButtonHandler = () => {
+    navigate("/register");
   };
 
   const logoutButtonHandler = () => {
@@ -114,12 +119,25 @@ function NavBarHome() {
     });
     navigate("/hotels");
   };
+  // side effects
 
+  //don't update destination is the smae
   useEffect(() => {
     if (destination.toLowerCase() != destinationState.toLowerCase()) {
       setDestination(destination);
     }
   }, [destination]);
+
+  // load favorite hotels
+  useEffect(() => {
+    const user = auth.currentUser;
+
+    const unsubFavHotel = onSnapshot(doc(db, "users", user.uid), (doc) => {
+      const data = doc.data().favorites;
+      setHotelFav(data);
+    });
+    return () => unsubFavHotel();
+  }, []);
 
   return (
     <AppBar position="sticky">
@@ -136,14 +154,19 @@ function NavBarHome() {
             </Link>
             <Stack spacing={2} direction="row">
               {!userIsLogin && (
-                <StyledButton variant="contained">Register</StyledButton>
+                <StyledButton
+                  variant="contained"
+                  onClick={registerButtonHandler}
+                >
+                  Register
+                </StyledButton>
               )}
               {!userIsLogin && (
                 <StyledButton variant="contained" onClick={loginButtonHandler}>
                   Login
                 </StyledButton>
               )}
-              {userIsLogin && <Favorites />}
+              {userIsLogin && <Favorites hotels={hotelFav} />}
               {userIsLogin && (
                 <StyledButton variant="contained" onClick={logoutButtonHandler}>
                   Logout

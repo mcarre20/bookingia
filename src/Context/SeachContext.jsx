@@ -4,7 +4,7 @@ const todayDate = new Date();
 const checkinDate = new Date();
 const checkoutDate = new Date();
 checkinDate.setDate(todayDate.getDate() + 14);
-checkoutDate.setDate(checkinDate.getDate() + 3);
+checkoutDate.setDate(todayDate.getDate() + 20);
 
 const INITIAL_STATE = {
   destination: "",

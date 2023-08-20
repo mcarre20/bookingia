@@ -42,7 +42,7 @@ function HotelDetails() {
       setIsLoading(false);
     };
     getData();
-  }, []);
+  }, [id]);
 
   return (
     <>

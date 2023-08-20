@@ -1,25 +1,12 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
+// Server side functions
+// to handle 3rd party API call and automated process
 const { onRequest } = require("firebase-functions/v2/https");
+const functions = require("firebase-functions");
 const cors = require("cors")({ origin: true });
+const admin = require("firebase-admin");
+admin.initializeApp();
 
-// const logger = require("firebase-functions/logger");
-
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
+// get a list of hotels based on location, number of rooms, adults and dates
 exports.getHotels = onRequest((req, res) => {
   cors(req, res, async () => {
     const APIKEY = process.env.HOTEL_API_KEY;
@@ -75,7 +62,9 @@ exports.getHotels = onRequest((req, res) => {
   });
 });
 
+// get description, hotel pictues and rooms information
 exports.getHotelsDetails = onRequest(async (req, res) => {
+  //use CORS to handle cross-orign request
   cors(req, res, async () => {
     const APIKEY = process.env.HOTEL_API_KEY;
     const hotelID = req.query.hotel_id;
@@ -140,4 +129,13 @@ exports.getHotelsDetails = onRequest(async (req, res) => {
     }
   });
   return;
+});
+
+// create database records for user when they signup
+exports.newUserSignUp = functions.auth.user().onCreate((user) => {
+  return admin
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .set({ email: user.email, favorites: [] });
 });

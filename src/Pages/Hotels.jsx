@@ -34,23 +34,6 @@ function Hotels() {
     getData();
   }, [page]);
 
-  const hotelListJSX = hotelsList.map((hotel) => {
-    return (
-      <HotelCard
-        key={hotel.hotel_id}
-        id={hotel.hotel_id}
-        hotelName={hotel.hotel_name}
-        hotelAddress={hotel.address}
-        minPrice={hotel.min_total_price}
-        currency={hotel.currencycode}
-        photoURL={hotel.max_photo_url}
-        hotelClass={hotel.class}
-        distanceFromCenter={hotel.distance_to_cc}
-        cityDistrict={hotel.district}
-        hotelZipcode={hotel.zip}
-      />
-    );
-  });
   return (
     <>
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
@@ -76,6 +59,7 @@ function Hotels() {
                       distanceFromCenter={hotel.distance_to_cc}
                       cityDistrict={hotel.district}
                       hotelZipcode={hotel.zip}
+                      cityName={hotel.city_trans}
                     />
                   );
                 })
