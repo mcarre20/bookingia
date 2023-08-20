@@ -6,7 +6,11 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { auth, db } from "../../firebase";
 
 function HotelCard({
   id,
@@ -19,7 +23,22 @@ function HotelCard({
   distanceFromCenter,
   cityDistrict,
   hotelZipcode,
+  cityName,
 }) {
+  //get user auth status
+
+  const { userIsLogin } = useContext(AuthContext);
+
+  //side effect
+  //save hotel as favorite
+  const favoriteHandler = async () => {
+    const UID = auth.currentUser.uid;
+    const favoriteRef = doc(db, "users", UID);
+    await updateDoc(favoriteRef, {
+      favorites: arrayUnion({ id, hotelName, cityName }),
+    });
+  };
+
   return (
     <Card sx={{ display: "flex", padding: 2, gap: 2 }}>
       <CardMedia
@@ -67,6 +86,7 @@ function HotelCard({
             flexDirection: "column",
             width: "200px",
             alignSelf: "flex-end",
+            alignItems: "flex-end",
             gap: 1,
           }}
         >
@@ -75,14 +95,30 @@ function HotelCard({
           >
             From {`${minPrice.toFixed(2)} ${currency}`}
           </Typography>
-          <Button variant="contained" size="medium">
+          <Box display="flex" gap={2}>
+            <Button
+              variant="outlined"
+              size="medium"
+              color="secondary"
+              onClick={favoriteHandler}
+              sx={{ display: userIsLogin ? "block" : "none" }}
+            >
+              Mark As Favorite
+            </Button>
             <Link
               to={`/hotel/${id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              See Rooms
+              <Button
+                variant="contained"
+                size="medium"
+                color="secondary"
+                sx={{ color: "white" }}
+              >
+                See Rooms
+              </Button>
             </Link>
-          </Button>
+          </Box>
         </Box>
       </Box>
     </Card>

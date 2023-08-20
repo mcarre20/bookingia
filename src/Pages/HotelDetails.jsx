@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Container,
   ImageList,
@@ -7,7 +8,6 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getHotelData, getHotelPictures, getHotelRooms } from "../API/HotelAPI";
 import { SearchContext } from "../Context/SeachContext";
 import DataLoading from "./Components/DataLoading";
 import RooomsTable from "./Components/roomsTable";
@@ -22,38 +22,35 @@ function HotelDetails() {
   const [hotelData, setHotelData] = useState({});
   const [hotelRoomsData, setHotelRoomsData] = useState([]);
   const [hotelPictures, sethotelPictures] = useState([]);
+  const [fetchError, setFetchError] = useState(false);
 
   //Side effect - fetech Data
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       try {
-        const fetchedHotelData = await getHotelData(id);
-        const fetchedHotelRoomData = await getHotelRooms(
-          id,
-          checkin,
-          checkout,
-          numberOfAdults,
-          numberOfRooms
+        const hotelDetailsFetch = await fetch(
+          `https://gethotelsdetails-xa4qpi447a-uc.a.run.app?hotel_id=${id}&rooms=${numberOfRooms}&adults=${numberOfAdults}&checkin=${checkin}&checkout=${checkout}`
         );
-        const fetchedHotelPictures = await getHotelPictures(id);
-
-        setHotelData(fetchedHotelData);
-        setHotelRoomsData(fetchedHotelRoomData);
-        sethotelPictures(fetchedHotelPictures);
+        const hotelDetails = await hotelDetailsFetch.json();
+        setHotelData(hotelDetails.hotelData);
+        setHotelRoomsData(hotelDetails.hotelRoomData);
+        sethotelPictures(hotelDetails.hotelPicture);
       } catch (error) {
-        console.log(error);
+        setFetchError(true);
       }
-
       setIsLoading(false);
     };
     getData();
-  }, []);
+  }, [id]);
 
   return (
     <>
       <Container maxWidth="lg" sx={{ mt: "2rem" }}>
         {isLoading ? (
           <DataLoading />
+        ) : fetchError ? (
+          <Alert severity="error">Error loading hotel info</Alert>
         ) : (
           <Box component="main">
             <Box>

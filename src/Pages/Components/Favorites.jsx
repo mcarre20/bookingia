@@ -1,19 +1,51 @@
 import { Button, Menu, MenuItem, styled } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../../Context/SeachContext";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   background: "#e0e0e0",
   color: "#212121",
 }));
-function Favorites() {
+function Favorites({ hotels = [] }) {
+  //route
+  const navigate = useNavigate();
+  //state
   const [anchorEL, setAnchorEL] = useState(null);
   const open = Boolean(anchorEL);
-  const clickHandler = (e) => {
+
+  //context
+  const {
+    destination,
+    checkin,
+    checkout,
+    numberOfAdults,
+    numberOfRooms,
+    dispatch: searchDispatch,
+  } = useContext(SearchContext);
+
+  //handler
+  const favButtonHandler = (e) => {
     setAnchorEL(e.currentTarget);
   };
   const closeHandler = () => {
     setAnchorEL(null);
   };
+  const favHotelHandler = (cityName, hotelID) => {
+    searchDispatch({
+      type: "new_search",
+      payload: {
+        destination: cityName,
+        checkin,
+        checkout,
+        numberOfAdults,
+        numberOfRooms,
+      },
+    });
+
+    navigate(`/hotel/${hotelID}`);
+  };
+
   return (
     <>
       <StyledButton
@@ -21,7 +53,7 @@ function Favorites() {
         aria-controls={open ? "favorites-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        onClick={clickHandler}
+        onClick={favButtonHandler}
         variant="contained"
       >
         Favorites
@@ -32,11 +64,20 @@ function Favorites() {
         open={open}
         onClose={closeHandler}
         MenuListProps={{ "aria-labelledby": "favorites-button" }}
+        sx={{ marginTop: 1 }}
       >
-        <MenuItem>Hotel 1</MenuItem>
-        <MenuItem>Hotel 2</MenuItem>
-        <MenuItem>Hotel 3</MenuItem>
-        <MenuItem>Hotel 4</MenuItem>
+        {hotels.length < 1 ? (
+          <MenuItem>No Hotels added</MenuItem>
+        ) : (
+          hotels.map((hotel) => (
+            <MenuItem
+              key={hotel.id}
+              onClick={() => favHotelHandler(hotel.cityName, hotel.id)}
+            >
+              {hotel.hotelName}
+            </MenuItem>
+          ))
+        )}
       </Menu>
     </>
   );
