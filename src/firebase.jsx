@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
+  apiKey: "AIzaSyBiFhhW-J1y2hD9BwQu9Q9CXQtjBdSH_Uk",
 
   authDomain: "bookingia.firebaseapp.com",
 
