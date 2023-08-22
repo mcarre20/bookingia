@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../Context/SeachContext";
 import { capitalizeFirstWord } from "../../helpers/helperFunctions";
 
-function HotelCard({ cityName, imageURL }) {
+function CityCard({ cityName, imageURL }) {
   const navigate = useNavigate();
   const {
     checkin,
@@ -57,4 +57,4 @@ function HotelCard({ cityName, imageURL }) {
   );
 }
 
-export default HotelCard;
+export default CityCard;

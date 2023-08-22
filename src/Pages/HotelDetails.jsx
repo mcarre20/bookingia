@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SearchContext } from "../Context/SeachContext";
 import DataLoading from "./Components/DataLoading";
-import RooomsTable from "./Components/roomsTable";
+import RoomsTable from "./Components/roomsTable";
 
 function HotelDetails() {
   const { id } = useParams();
@@ -88,7 +88,7 @@ function HotelDetails() {
                 {hotelRoomsData[0].total_blocks === 0 ? (
                   <Typography>No Rooms Available</Typography>
                 ) : (
-                  <RooomsTable
+                  <RoomsTable
                     roomsDetails={hotelRoomsData[0].block}
                     hotelURL={hotelData.url}
                   />

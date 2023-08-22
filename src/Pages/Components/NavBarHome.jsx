@@ -22,7 +22,7 @@ import { auth, db } from "../../firebase";
 import { formatDate } from "../../helpers/helperFunctions";
 import Favorites from "./Favorites";
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(() => ({
   background: "#e0e0e0",
   color: "#212121",
 }));
@@ -130,14 +130,15 @@ function NavBarHome() {
 
   // load favorite hotels
   useEffect(() => {
-    const user = auth.currentUser;
-
-    const unsubFavHotel = onSnapshot(doc(db, "users", user.uid), (doc) => {
-      const data = doc.data().favorites;
-      setHotelFav(data);
-    });
-    return () => unsubFavHotel();
-  }, []);
+    if (userIsLogin) {
+      const user = auth.currentUser;
+      const unsubFavHotel = onSnapshot(doc(db, "users", user.uid), (doc) => {
+        const data = doc.data().favorites;
+        setHotelFav(data);
+      });
+      return () => unsubFavHotel();
+    }
+  }, [userIsLogin]);
 
   return (
     <AppBar position="sticky">

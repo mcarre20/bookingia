@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-function RooomsTable({ roomsDetails, hotelURL }) {
+function RoomsTable({ roomsDetails, hotelURL }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ width: "100%" }} aria-label="simple table">
@@ -57,4 +57,4 @@ function RooomsTable({ roomsDetails, hotelURL }) {
   );
 }
 
-export default RooomsTable;
+export default RoomsTable;

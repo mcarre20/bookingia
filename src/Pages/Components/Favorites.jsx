@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../Context/SeachContext";
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({}) => ({
   background: "#e0e0e0",
   color: "#212121",
 }));
@@ -16,7 +16,6 @@ function Favorites({ hotels = [] }) {
 
   //context
   const {
-    destination,
     checkin,
     checkout,
     numberOfAdults,
