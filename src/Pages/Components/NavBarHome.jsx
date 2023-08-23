@@ -51,8 +51,8 @@ function NavBarHome() {
     dispatch: searchDispatch,
   } = useContext(SearchContext);
   const [destinationState, setDestination] = useState("");
-  const [checkinDate, setCheckinDate] = useState(dayjs(checkin));
-  const [checkoutDate, setCheckoutDate] = useState(dayjs(checkout));
+  const [checkinDate, setCheckinDate] = useState(checkin);
+  const [checkoutDate, setCheckoutDate] = useState(checkout);
   const [numberOfAdultsState, setNumberOfAdults] = useState(numberOfAdults);
   const [numberOfRoomsSate, setNumberOfRooms] = useState(numberOfRooms);
   const [hotelFav, setHotelFav] = useState([]);
@@ -202,7 +202,7 @@ function NavBarHome() {
               <DatePicker
                 label="Check-in"
                 slotProps={{ textField: { size: "small", width: "50%" } }}
-                value={checkinDate}
+                value={dayjs(checkinDate)}
                 onChange={checkinHandler}
                 disablePast
               />
@@ -210,7 +210,7 @@ function NavBarHome() {
               <DatePicker
                 label="Check-out"
                 slotProps={{ textField: { size: "small" } }}
-                value={checkoutDate}
+                value={dayjs(checkoutDate)}
                 onChange={checkoutHandler}
                 disablePast
               />

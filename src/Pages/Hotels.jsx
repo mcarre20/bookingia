@@ -24,6 +24,7 @@ function Hotels() {
           `https://gethotels-xa4qpi447a-uc.a.run.app?city=${destination}&rooms=${numberOfRooms}&adults=${numberOfAdults}&checkin=${checkin}&checkout=${checkout}&page_number=${page}`
         );
         const hotelData = await res.json();
+
         setHotelsList(hotelData.hotelsData.result);
         setNumberOfPages(Math.round(hotelData.hotelsData.primary_count / 20));
       } catch (error) {
