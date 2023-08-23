@@ -1,12 +1,14 @@
 import { Alert, Box, Container, Pagination, Stack } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { SearchContext } from "../Context/SeachContext";
 import DataLoading from "./Components/DataLoading";
 import HotelCard from "./Components/HotelCard";
 
 function Hotels() {
-  const { destination, checkin, checkout, numberOfAdults, numberOfRooms } =
+  const { checkin, checkout, numberOfAdults, numberOfRooms } =
     useContext(SearchContext);
+  const { destination } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
   const [hotelsList, setHotelsList] = useState([]);
@@ -19,6 +21,7 @@ function Hotels() {
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       try {
         const res = await fetch(
           `https://gethotels-xa4qpi447a-uc.a.run.app?city=${destination}&rooms=${numberOfRooms}&adults=${numberOfAdults}&checkin=${checkin}&checkout=${checkout}&page_number=${page}`
@@ -33,7 +36,7 @@ function Hotels() {
       setIsLoading(false);
     };
     getData();
-  }, [page]);
+  }, [page, destination]);
 
   return (
     <>

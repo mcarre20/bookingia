@@ -25,7 +25,7 @@ function CityCard({ cityName, imageURL }) {
         numberOfRooms,
       },
     });
-    navigate("/hotels");
+    navigate(`/hotels/${cityName}`);
   };
   return (
     <Box

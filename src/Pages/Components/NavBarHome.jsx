@@ -117,10 +117,9 @@ function NavBarHome() {
         numberOfRooms: numberOfRoomsSate,
       },
     });
-    navigate("/hotels");
+    navigate(`/hotels/${destinationState}`);
   };
   // side effects
-
   //don't update destination is the smae
   useEffect(() => {
     if (destination.toLowerCase() != destinationState.toLowerCase()) {
